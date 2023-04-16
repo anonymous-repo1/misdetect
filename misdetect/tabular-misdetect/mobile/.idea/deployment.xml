@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" autoUpload="Always" serverName="dengyuhao@10.1.114.88:59022 password" showExcludedInSync="true">
+    <serverData>
+      <paths name="dengyuhao@10.1.114.88:59022 password">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/dengyuhao/project/mobile-price-label-flip" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="dengyuhao@10.1.114.88:59956 password (2)">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/dengyuhao/project/mobile-price" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
+  </component>
+</project>
