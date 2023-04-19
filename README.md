@@ -63,6 +63,7 @@ Before running the codes, please make sure the environment is set proporly accor
 Different experiments can be conducted by passing different parameters to `main.py`.
 We explain some key parameters here.
 
+
 > Mislabel ratio, i.e., the fraction of dataset to be fflipped as mislabeled. Although the mislabel ratio for each dataset is indicated in the table above, we still provide the mislabel ratio parameter, which allows users to fill in any datasets for experimentation.
 >> --mis_ratio [mislabel_ratio]
 
@@ -77,3 +78,5 @@ For example, if you want to select a dataset with Random mislabel injection meth
 
 > Number of neighbors (K) for the classification model.
 >> --kNN_k [k]
+
+There are many other parameters and we have provided detailed clarification for them, which can be found in `config.py`.

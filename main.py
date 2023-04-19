@@ -1,9 +1,8 @@
 import os
 import torch.nn as nn
 import argparse
-import fastcore.nets as nets
-import fastcore.datasets as datasets
-import fastcore.methods as methods
+import model as nets
+import datasets as datasets
 from torchvision import transforms
 from utils import *
 from datetime import datetime
@@ -28,45 +27,37 @@ def main(args=None):
 
     if args.resume != "":
         # Load checkpoint
-        try:
-            print("=> Loading checkpoint '{}'".format(args.resume))
-            checkpoint = torch.load(args.resume, map_location=args.device)
-            assert {"exp", "epoch", "state_dict", "opt_dict", "best_acc1", "rec", "subset", "sel_args"} <= set(
-                checkpoint.keys())
-            assert 'indices' in checkpoint["subset"].keys()
-            start_exp = checkpoint['exp']
-            start_epoch = checkpoint["epoch"]
-        except AssertionError:
-            try:
-                assert {"exp", "subset", "sel_args"} <= set(checkpoint.keys())
-                assert 'indices' in checkpoint["subset"].keys()
-                print("=> The checkpoint only contains the subset, training will start from the begining")
-                start_exp = checkpoint['exp']
-                start_epoch = 0
-            except AssertionError:
-                print("=> Failed to load the checkpoint, an empty one will be created")
-                checkpoint = {}
-                start_exp = 0
-                start_epoch = 0
-    else:
-        checkpoint = {}
-        start_exp = 0
-        start_epoch = 0
+        # try:
+        #     print("=> Loading checkpoint '{}'".format(args.resume))
+        #     checkpoint = torch.load(args.resume, map_location=args.device)
+        #     assert {"exp", "epoch", "state_dict", "opt_dict", "best_acc1", "rec", "subset", "sel_args"} <= set(
+        #         checkpoint.keys())
+        #     assert 'indices' in checkpoint["subset"].keys()
+        #     start_exp = checkpoint['exp']
+        #     start_epoch = checkpoint["epoch"]
+        # except AssertionError:
+        #     try:
+        #         assert {"exp", "subset", "sel_args"} <= set(checkpoint.keys())
+        #         assert 'indices' in checkpoint["subset"].keys()
+        #         print("=> The checkpoint only contains the subset, training will start from the begining")
+        #         start_exp = checkpoint['exp']
+        #         start_epoch = 0
+        #     except AssertionError:
+        #         print("=> Failed to load the checkpoint, an empty one will be created")
+        #         checkpoint = {}
+        #         start_exp = 0
+        #         start_epoch = 0
+    # else:
+    #     checkpoint = {}
+    #     start_exp = 0
+    #     start_epoch = 0
 
-    for exp in range(start_exp, args.num_exp):
-        if args.save_path != "":
-            checkpoint_name = "{dst}_{net}_{mtd}_exp{exp}_epoch{epc}_{dat}_{fr}_".format(dst=args.dataset,
-                                                                                         net=args.model,
-                                                                                         mtd=args.selection,
-                                                                                         dat=datetime.now(),
-                                                                                         exp=start_exp,
-                                                                                         epc=args.epochs,
-                                                                                         fr=args.fraction)
+    if args.save_path != "":
+        checkpoint_name = "{dst}_{net}_epoch{epc}_".format(dst=args.dataset,net=args.model,dat=datetime.now(),epc=args.epochs,)
 
         print('\n================== Exp %d ==================\n' % exp)
-        print("dataset: ", args.dataset, ", model: ", args.model, ", selection: ", args.selection, ", num_ex: ",
-              args.num_exp, ", epochs: ", args.epochs, ", fraction: ", args.fraction, ", seed: ", args.seed,
-              ", lr: ", args.lr, ", save_path: ", args.save_path, ", resume: ", args.resume, ", device: ", args.device,
+        print("dataset: ", args.dataset, ", model: ", args.model, ", epochs: ", args.epochs, ", mis_ratio: ", args.mis_ratio, ", seed: ", args.seed,
+              ", lr: ", args.lr, ", save_path: ", args.save_path, ", mis_distribution: ", args.mis_distribution, ", device: ", args.device,
               ", checkpoint_name: " + checkpoint_name if args.save_path != "" else "", "\n", sep="")
 
 
@@ -78,35 +69,12 @@ def main(args=None):
         torch.random.manual_seed(args.seed)
 
 
-
-        st_time = time.time()
-
-        if "subset" in checkpoint.keys():
-            subset = checkpoint['subset']
-            selection_args = checkpoint["sel_args"]
-            print("Do not need to re-select subset!")
-        else:
-
-            selection_args = dict(epochs=args.selection_epochs,
-                                  selection_method=args.uncertainty,
-                                  balance=args.balance,
-                                  greedy=args.submodular_greedy,
-                                  function=args.submodular
-                                  )
-
-            method = methods.__dict__[args.selection](dst_train, args, args.fraction, args.seed, **selection_args)
-            subset = method.select()
-        selection_time = time.time() - st_time
-        st_time = time.time()
-
-        print(len(subset["indices"]))
-
         # Augmentation
         if args.dataset == "CIFAR10" or args.dataset == "CIFAR100":
             dst_train.transform = transforms.Compose(
                 [transforms.RandomCrop(args.im_size, padding=4, padding_mode="reflect"),
                  transforms.RandomHorizontalFlip(), dst_train.transform])
-        elif args.dataset == "ImageNet":
+        elif args.dataset == "KMINIST":
             dst_train.transform = transforms.Compose([
                 transforms.RandomResizedCrop(224),
                 transforms.RandomHorizontalFlip(),
@@ -114,25 +82,11 @@ def main(args=None):
                 transforms.Normalize(mean, std)
             ])
 
-        # Handle weighted subset
-        if_weighted = "weights" in subset.keys()
-        if if_weighted:
-            dst_subset = WeightedSubset(dst_train, subset["indices"], subset["weights"])
-        else:
-            dst_subset = torch.utils.data.Subset(dst_train, subset["indices"])
-
-        # BackgroundGenerator for ImageNet to speed up dataloaders
-        if args.dataset == "ImageNet":
-            train_loader = DataLoaderX(dst_subset, batch_size=args.train_batch, shuffle=True,
-                                       num_workers=args.workers, pin_memory=True)
-            test_loader = DataLoaderX(dst_test, batch_size=args.train_batch, shuffle=False,
-                                      num_workers=args.workers, pin_memory=True)
-        else:
-            train_loader = torch.utils.data.DataLoader(dst_subset, batch_size=args.train_batch, shuffle=True,
+        train_loader = torch.utils.data.DataLoader(dst_subset, batch_size=args.train_batch, shuffle=True,
                                                        num_workers=args.workers, pin_memory=True)
-            # test_loader = torch.utils.data.DataLoader(dst_test, batch_size=args.train_batch, shuffle=False,
-            #                                           num_workers=args.workers, pin_memory=True)
-            test_loader = torch.utils.data.DataLoader(dst_test, batch_size=args.test_batch, shuffle=False,
+        # test_loader = torch.utils.data.DataLoader(dst_test, batch_size=args.train_batch, shuffle=False,
+        #                                           num_workers=args.workers, pin_memory=True)
+        test_loader = torch.utils.data.DataLoader(dst_test, batch_size=args.test_batch, shuffle=False,
                                                       num_workers=args.workers, pin_memory=True)
 
 
@@ -179,20 +133,6 @@ def main(args=None):
                 optimizer = torch.optim.__dict__[args.optimizer](network.parameters(), args.lr, momentum=args.momentum,
                                                                  weight_decay=args.weight_decay, nesterov=args.nesterov)
 
-            # LR scheduler
-            if args.scheduler == "CosineAnnealingLR":
-                scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, len(train_loader) * args.epochs,
-                                                                       eta_min=args.min_lr)
-            elif args.scheduler == "StepLR":
-                scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=len(train_loader) * args.step_size,
-                                                            gamma=args.gamma)
-            else:
-                scheduler = torch.optim.lr_scheduler.__dict__[args.scheduler](optimizer)
-            scheduler.last_epoch = (start_epoch - 1) * len(train_loader)
-
-            if "opt_dict" in checkpoint.keys():
-                optimizer.load_state_dict(checkpoint["opt_dict"])
-
             # Log recorder
             if "rec" in checkpoint.keys():
                 rec = checkpoint["rec"]
@@ -201,7 +141,7 @@ def main(args=None):
 
             best_prec1 = checkpoint["best_acc1"] if "best_acc1" in checkpoint.keys() else 0.0
 
-            # Save the checkpont with only the susbet.
+            # Save the checkpont.
             if args.save_path != "" and args.resume == "":
                 save_checkpoint({"exp": exp,
                                  "subset": subset,
@@ -220,14 +160,11 @@ def main(args=None):
             #     train_test_in_epoch(train_loader, network, criterion, optimizer, scheduler, epoch, args, rec,
             #                         test_loader, args.test_itr_interval, if_weighted=if_weighted)
 
-
-
-
             for epoch in range(start_epoch, args.epochs):
                 # train for one epoch
                 train(train_loader, network, criterion, optimizer, scheduler, epoch, args, rec, if_weighted=if_weighted)
 
-                # evaluate on validation set
+                # evaluate on detection accuracy
                 if args.test_interval > 0 and (epoch + 1) % args.test_interval == 0:
                     prec1 = test(test_loader, network, criterion, epoch, args, rec)
 
@@ -274,14 +211,12 @@ def main(args=None):
             #                         prec=best_prec1)
             print("#"*20, "   See rec   ", "#"*20)
             print(rec)
-            print('| Best accuracy: ', best_prec1, ", on model " + model if len(models) > 1 else "", end="\n\n")
+            print('| Best detect accuracy: ', best_prec1, ", on model " + model if len(models) > 1 else "", end="\n\n")
             start_epoch = 0
             checkpoint = {}
             sleep(2)
         train_time = time.time() - st_time
         total_time = selection_time + train_time
-        print(f"Coreset selection took [{selection_time}]")
-        print(f"Model training took [{train_time}]")
         print(f"Total time is  [{total_time}]")
         if args.resume != "":
             coreset_save_path = args.resume
