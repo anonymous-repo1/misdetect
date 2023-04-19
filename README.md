@@ -8,7 +8,7 @@ The framework of our algorithm is as follows:
     <img src="framework.png" width="1000"/>
 <p>
 
-We evaluate our approach on 15 real-world image and tabular datasets from diverse domains. Table below shows the statistics of the datasets.
+We evaluate our approach on 15 real-world image and tabular datasets from diverse domains. Some the datasets are relatively large, please further review through the links provided in the paper. Table below shows the statistics of the datasets.
 
 |   **Dataset**  | **#-Items** | **#-Attributes** | **#-Classes** | **Mislabel Ratio** |             **Classifacation Task**             |
 |:--------------:|:-----------:|:----------------:|:-------------:|:------------------:|:-----------------------------------------------:|
