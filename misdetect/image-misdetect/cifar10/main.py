@@ -1,108 +1,79 @@
-from torch import nn
-from model import Model
-from train import *
+from util import *
 import time
 import os
 
-os.environ["CUDA_VISIBLE_DEVICES"] = '0'
+os.environ["CUDA_VISIBLE_DEVICES"] = '1'
 
 loss_function = nn.CrossEntropyLoss()
 loss_function = loss_function.to(device)
 if __name__ == '__main__':
-    logs_acc = "acc_logs2"
-    logs_early_loss = "early_loss_logs_3epo"
-    logs_early_loss_about_ratio = "early_loss_about_ratio_logs4"
-    logs_flip_label = "flip_label_logs"
-    logs_flip_label_loop = "flip_label_loop_logs"
-    logs_outlier_detection = "outlier_detection_logs"
-    logs_get_detect_model = "get_detect_model_logs"
-
-    train_loader_initial = DataLoader(dataset=MyDataSet(train_clean_bad_set), batch_size=256, shuffle=True)
-    test_loader_initial = DataLoader(dataset=MyDataSet(train_clean_bad_set), batch_size=1, shuffle=False)
-    train_clean_dataset_loader = DataLoader(dataset=MyDataSet(train_clean_dataset), batch_size=64, shuffle=True)
-    train_bad_dataset_loader = DataLoader(dataset=MyDataSet(train_bad_dataset), batch_size=64, shuffle=True)
-    model = Model()
-    model = model.to(device)
-    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
-
     # 记录时间
     start_time = time.time()
+    coteaching()
 
-    # acc
-    # train_acc(model, train_loader_initial, train_clean_dataset_loader, train_bad_dataset_loader, len(train_set),
-    #           len(train_clean_dataset), len(train_bad_dataset), epoch=100, optimizer=optimizer,
-    #           loss_function=loss_function, logs_path=logs_acc)
+    # 多轮detect，用influence function, 每轮选XX个(ours)
+    # 0.6 with 0.5;  0.9 with 0.3
+    # detect_with_influence_iteratively(detect_num=int(len(train_bad_dataset) / 4), detect_iterate=4,
+    #                                    clean_pool_len=1000, bad_pool_len=int(len(train_bad_dataset) / 4) + 1000)
 
+    # detect_with_influence_iteratively_on_one_model(detect_num=int(len(train_bad_dataset) / 4), detect_iterate=4,
+    #                                   clean_pool_len=1000, bad_pool_len=int(len(train_bad_dataset) / 4) + 1000)
+
+    # detect_with_influence_iteratively_on_one_model_with_dynamic_clean(
+    #     detect_num=int(len(train_bad_dataset) / 4), detect_iterate=4, clean_pool_len=int(len(train_bad_dataset) / 4),
+    #     bad_pool_len=int(len(train_bad_dataset) / 4) + 1000)
+
+    # detect_with_influence_iteratively_on_one_model_with_dynamic_clean_and_outlier(
+    #     detect_num=int(len(train_bad_dataset) / 4), detect_iterate=4, clean_pool_len=1000,
+    #     bad_pool_len=int(len(train_bad_dataset) / 4) + 1000, confidence_threshold=3)
+
+    # detect_with_influence_iteratively_on_one_model_with_dynamic_clean_and_outlier_all_remained(
+    #     detect_num=int(len(train_bad_dataset) / 4), detect_iterate=4, clean_pool_len=int(len(train_bad_dataset) / 4),
+    #     bad_pool_len=int(len(train_bad_dataset) / 4) + 10, confidence_threshold=3)
+
+    # (detect_num=500, detect_iterate=int(len(train_bad_dataset) / 500),clean_pool_len=1000, bad_pool_len=1000)
+
+    # KNN
+    # KNN_sklearn(len(train_clean_bad_set), len(train_clean_dataset))
+
+    # NCN
+    # NCN_sklearn(len(train_clean_bad_set), len(train_clean_dataset))
+
+    # Ensemble
+    # Ensemble(len(train_clean_bad_set), len(train_clean_dataset))
+
+    # clean lab
+    # cleanLab(len(train_clean_bad_set), len(train_clean_dataset))
+
+    # Training Set Debugging Using Trusted Items
+    # DUTI(clean_pool_len=50, iterate_num=20)
+
+    # partition filter
+    # partition_filter(len(train_clean_bad_set), interval=int(len(train_clean_bad_set) / 10), step=10)
+
+    # self-ensemble label filtering
+    # SELF(len(train_clean_bad_set))
+
+    # noisy cross-validation(NCV)
+    # noisy_cross_validation(len(train_clean_bad_set), split_ratio=0.5, epoch=50)
+
+    # clean_pool
+    # clean_pool(clean_pool_len=int(len(train_clean_dataset) / 2))
+
+    # ==========================================跟自己比=========================================
     # early loss
-    # train_early_loss(model, train_loader_initial, test_loader_initial, epoch=3, optimizer=optimizer,
-    #                  loss_function=loss_function, logs_path=logs_early_loss)
+    # early_loss(len(train_set), len(train_clean_dataset), len(train_bad_dataset), epoch=3)
 
-    # early loss about ratio
-    # train_early_loss_about_ratio(epoch=20, loss_function=loss_function, logs_path=logs_early_loss_about_ratio)
-
-    # early loss准确率和flip准确率(0.73 and 0.47 with good_ratio 0.6) (0.698 and 0.5137 with good_ratio 0.7)
-    # (0.65 and 0.55 with good_ratio 0.8) (0.57 and 0.61 with good_ratio 0.9)
-    # 如果把训练的batch size改成1，则early loss=0.47 and flip label = 0.1657
-    # 如果把训练的batch size改成128，则early loss=0.74 and flip label = 0.51
-    # precision_and_recall(model, train_loader_initial, test_loader_initial, len(train_set),
-    #                      len(train_clean_dataset), len(train_bad_dataset),
-    #                      epoch=1, optimizer=optimizer, loss_function=loss_function)
-
-    # detect_with_3_epoch(model, train_loader_initial, test_loader_initial, len(train_set),
-    #                     len(train_clean_dataset), len(train_bad_dataset),
-    #                     epoch=1, optimizer=optimizer, loss_function=loss_function)
-
-    # early loss准确率with multiple epoch (0.77 and 0.55 with 3 epoch and 0.7744 and 0.47 with 8 epoch in good_ratio 0.6)
-    # (0.6382 with 3 epoch and 0.6606 with 8 epoch in good_ratio 0.9)
-    # early_loss_and_flip_with_multiple_epoch(model, train_loader_initial, test_loader_initial,
-    #                                         len(train_set), len(train_clean_dataset), len(train_bad_dataset),
-    #                                         epoch=8, optimizer=optimizer, loss_function=loss_function)
-
-    # flip label(include retrain)
-    # flip_label(model, train_loader_initial, len_random=100, epoch=1, optimizer=optimizer,
-    #            loss_function=loss_function, logs_path=logs_flip_label)
-
-    # flip label loop(no retrain)
-    # flip_label_loop(model, train_loader_initial, len_random=1000, epoch=1, optimizer=optimizer,
-    #                 loss_function=loss_function, logs_path=logs_flip_label_loop)
-
-    # outlier detection
-    # outlier_detection(model, train_loader_initial, len_random=100, epoch=1, optimizer=optimizer,
-    #                   loss_function=loss_function, logs_path=logs_outlier_detection)
-
-    # get detect model(0.67595 with 3 epoch and 0.60845 with 8 epoch in good_ratio 0.6)
-    # get_detect_model(len(train_set), len(train_clean_dataset), len(train_bad_dataset), loss_ratio=0.002,
-    #                  epoch=10, loss_function=loss_function, logs_path=logs_get_detect_model)
-
-
-    # get_detect_model_myself(len(train_set), len(train_clean_dataset), len(train_bad_dataset), loss_ratio=0.002,
-    #                         epoch=10, loss_function=loss_function)
+    # without dirty pool
+    # without_dirty_pool(detect_num=len(train_bad_dataset), clean_pool_len=1000)
 
     # 多轮detect，每轮选XX个
-    # 0.6 with 0.6;  0.9 with 0.3
-    # detect_with_multiple_epoch(detect_num=500)
-
-    # 2000
-    # detect_with_single_class(2000)
-
-    # 多个模型取平均
-    # early_loss_with_mean(1, len(train_set), len(train_clean_dataset), len(train_bad_dataset))
-
-    # 多个模型投票决定
-    # detect_with_vote(10, len(train_set), len(train_clean_dataset), len(train_bad_dataset))
-
-    # 多轮detect，用influence function, 每轮选XX个
-    # 0.6 with 0.5;  0.9 with 0.3; 0.7 with 0.5; 0.8 with 0.3
-    # detect_with_influence_iteratively(detect_num=500, detect_iterate=int(len(train_bad_dataset) / 500),
-    #                                   clean_pool_len=2000, bad_pool_len=500)
-
-    # test_clean_pool(len(train_set), len(train_clean_dataset), clean_pool_len=2000)
+    # without_influence(detect_num=500, detect_iterate=int(len(train_bad_dataset) / 500))
 
     # sorted early loss
-    # early_loss_sorted(model, train_loader_initial, test_loader_initial, epoch=1, optimizer=optimizer,
-    #                   loss_function=loss_function, logs_path=logs_early_loss)
+    # early_loss_sorted(epoch=1)
 
-    ensemble_validation4(len(train_set), len(train_clean_dataset), len(train_bad_dataset), epoch=15)
+    # detect_with_multiple_epoch_test_clean(detect_num=int(len(train_clean_dataset) / 4))
 
     end_time = time.time()
     print("GPU time:{}".format(end_time - start_time))
