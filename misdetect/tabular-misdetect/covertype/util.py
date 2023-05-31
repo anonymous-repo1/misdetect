@@ -973,7 +973,52 @@ def detect_with_influence_iteratively(detect_num, detect_iterate, clean_pool_len
     print("detect recall：{}".format(recall))
     print("detect f1 score：{}".format(f1))
 
-# early loss准确率
+# here the train_set represents the training set after mislabel detection, and different mislabel detection methods correspond to different ratio of mislabels on the train_set
+# and model_test represents the model we want to use
+def model_performance(train_set, model_test, epo):
+    train_loader = DataLoader(dataset=MyDataSet(train_set), batch_size=128, shuffle=True)
+    test_loader = DataLoader(dataset=MyDataSet(test_set), batch_size=128, shuffle=True)
+
+    epoch = epo
+
+    model = model_test
+    model = model.to(device)
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+    loss_function = nn.CrossEntropyLoss()
+    loss_function = loss_function.to(device)
+
+    # train
+    model.train()
+    for i in range(epoch):
+        for data in train_loader:
+            # GPU
+            train_feature, train_label = data
+            train_feature = train_feature.to(device)
+            train_label = train_label.to(device)
+            optimizer.zero_grad()
+            train_label_predict = model(train_feature)
+
+            # GPU
+            train_label_predict = train_label_predict.to(device)
+            train_loss = loss_function(train_label_predict, train_label)
+            train_loss.backward()
+            optimizer.step()
+
+    #test
+    model.eval()
+    acc_num = 0
+    with torch.no_grad():
+        for data in test_loader:
+            test_feature, test_label = data
+            test_feature = test_feature.to(device)
+            test_label = test_label.to(device)
+            test_label_predict = model(test_feature)
+            test_label_predict = test_label_predict
+            acc_num += (test_label_predict.argmax(1) == test_label).sum()
+    print("test accuracy{}".format(acc_num / len(test_set)))
+
+
+# early loss
 def test_clean_pool(total_len, clean_len, clean_pool_len):
     early_loss = np.zeros(total_len, dtype=np.float)
     for num in range(1):

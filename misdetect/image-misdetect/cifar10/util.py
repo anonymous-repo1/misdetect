@@ -1718,11 +1718,11 @@ def interactions_feature_label(neighbor_features, neighbor_labels):
 
 # here the train_set represents the training set after mislabel detection, and different mislabel detection methods correspond to different ratio of mislabels on the train_set
 # and model_test represents the model we want to use
-def model_performance(train_set, model_test):
+def model_performance(train_set, model_test, epo):
     train_loader = DataLoader(dataset=MyDataSet(train_set), batch_size=128, shuffle=True)
     test_loader = DataLoader(dataset=MyDataSet(test_set), batch_size=128, shuffle=True)
 
-    epoch = 20
+    epoch = epo
 
     model = model_test
     model = model.to(device)
@@ -1730,38 +1730,38 @@ def model_performance(train_set, model_test):
     loss_function = nn.CrossEntropyLoss()
     loss_function = loss_function.to(device)
 
-    # 800 / 50 = 16
-    for times in range(1):
-        model.train()
-        for i in range(epoch):
-            for data in train_loader:
-                # GPU加速
-                train_feature, train_label = data
-                train_feature = train_feature.to(device)
-                train_label = train_label.to(device)
-                optimizer.zero_grad()
-                train_label_predict = model(train_feature)
+    # train
+    model.train()
+    for i in range(epoch):
+        for data in train_loader:
+            # GPU
+            train_feature, train_label = data
+            train_feature = train_feature.to(device)
+            train_label = train_label.to(device)
+            optimizer.zero_grad()
+            train_label_predict = model(train_feature)
 
-                # GPU加速
-                train_label_predict = train_label_predict.to(device)
-                train_loss = loss_function(train_label_predict, train_label)
-                train_loss.backward()
-                optimizer.step()
+            # GPU
+            train_label_predict = train_label_predict.to(device)
+            train_loss = loss_function(train_label_predict, train_label)
+            train_loss.backward()
+            optimizer.step()
 
-        model.eval()
-        acc_num = 0
-        with torch.no_grad():
-            for data in test_loader:
-                test_feature, test_label = data
-                test_feature = test_feature.to(device)
-                test_label = test_label.to(device)
-                test_label_predict = model(test_feature)
-                test_label_predict = test_label_predict
-                acc_num += (test_label_predict.argmax(1) == test_label).sum()
-        print("测试准确率{}".format(acc_num / len(test_set)))
+    #test
+    model.eval()
+    acc_num = 0
+    with torch.no_grad():
+        for data in test_loader:
+            test_feature, test_label = data
+            test_feature = test_feature.to(device)
+            test_label = test_label.to(device)
+            test_label_predict = model(test_feature)
+            test_label_predict = test_label_predict
+            acc_num += (test_label_predict.argmax(1) == test_label).sum()
+    print("test accuracy{}".format(acc_num / len(test_set)))
 
 
-# 测试influence detect的效果
+# influence detect的
 def detect_with_influence_iteratively_on_one_model_with_dynamic_clean_and_outlier_all_remained(
         detect_num, detect_iterate, clean_pool_len, bad_pool_len, confidence_threshold):
     total_len = len(train_clean_bad_set)
