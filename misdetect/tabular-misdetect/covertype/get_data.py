@@ -57,7 +57,7 @@ class MyDataSet(Dataset):
     def __getitem__(self, index):
         return self.data[index]
 
-test_set = copy.deepcopy(train_set_tmp[int(0.2*len(train_set_tmp)):])
+test_clean_set = copy.deepcopy(train_set_tmp[int(0.2*len(train_set_tmp)):])
 train_set_tmp = copy.deepcopy(train_set_tmp[:int(0.8*len(train_set_tmp))])
 # cnt_label = {}
 # for idx, tensor in enumerate(train_set):

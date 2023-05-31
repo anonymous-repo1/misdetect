@@ -930,12 +930,12 @@ def detect_with_influence_iteratively(detect_num, detect_iterate, clean_pool_len
     print("detect recall：{}".format(recall))
     print("detect f1 score：{}".format(f1))
 
-# here the train_set represents the training set after mislabel detection, and different mislabel detection methods correspond to different ratio of mislabels on the train_set
+# here the train_clean_dirty_set represents the training set after mislabel detection, and different mislabel detection methods correspond to different ratio of mislabels on the train_set
 # and model_test represents the model we want to use
-def model_performance(train_set, model_test, epo):
-    train_loader = DataLoader(dataset=MyDataSet(train_set), batch_size=128, shuffle=True)
-    # The test set is completely clean
-    test_loader = DataLoader(dataset=MyDataSet(test_set), batch_size=128, shuffle=True)
+def model_performance(train_clean_dirty_set, model_test, epo):
+    train_loader = DataLoader(dataset=MyDataSet(train_clean_dirty_set), batch_size=128, shuffle=True)
+    # The test_clean_set is completely clean
+    test_loader = DataLoader(dataset=MyDataSet(test_clean_set), batch_size=128, shuffle=True)
 
     epoch = epo
 
@@ -973,7 +973,7 @@ def model_performance(train_set, model_test, epo):
             test_label_predict = model(test_feature)
             test_label_predict = test_label_predict
             acc_num += (test_label_predict.argmax(1) == test_label).sum()
-    print("test accuracy{}".format(acc_num / len(test_set)))
+    print("test accuracy{}".format(acc_num / len(test_clean_set)))
 
 
 # early loss

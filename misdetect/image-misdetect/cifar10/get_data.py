@@ -42,7 +42,7 @@ transform_test = torchvision.transforms.Compose([
 ])
 
 train_set_tmp = torchvision.datasets.CIFAR10(root="data", train=True, transform=transform_train, download=True)
-test_set = torchvision.datasets.CIFAR10(root="data", train=False, transform=transform_test, download=True)
+test_clean_set = torchvision.datasets.CIFAR10(root="data", train=False, transform=transform_test, download=True)
 
 train_set = []
 for i in train_set_tmp:
