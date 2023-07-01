@@ -36,7 +36,7 @@ We compare MisDetect against the state-of-the-art on the precision, recall and F
 
 <p align="center">
     <br>
-    <img src="result2.pdf" width="1000"/>
+    <img src="result2.png" width="1000"/>
 <p>
 
 # Quick Start
