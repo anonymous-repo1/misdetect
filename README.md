@@ -31,11 +31,12 @@ We evaluate our approach on 15 real-world image and tabular datasets from divers
 |    CoverType   |   581,013   |        54        |       7       |         40%        |          Different forest cover types.          |
 
 We compare MisDetect against the state-of-the-art on the precision, recall and F1-score of mislabel detection. Some of the results are listed below:
+<div id="-result1"></div> 
 <p align="center">
     <br>
     <img src="result1.png" width="1000"/>
 <p>
-
+<div id="-result2"></div> 
 <p align="center">
     <br>
     <img src="result2.png" width="1000"/>
@@ -146,3 +147,5 @@ python main.py covertype 0.3 random M_W_IM
 python main.py covertype 0.3 random M_W_M
 ```
 If you need to run the algorithms on other dataset, simply change the dataset name `covertype` into other names such as `uscensus`, `credit`, `airline`, `mobile`, `heart`, `eeg`, `wine` and `hotel`.
+
+After running the above command, we can obtain the final results corresponding to different algorithms. As shown in <a href = "#-result1">figure1</a> and <a href = "#-result2">figure2</a>. For each algorithm, we repeat the experiment 10 times and use the average of the 10 different experimental results as the final output result. 
