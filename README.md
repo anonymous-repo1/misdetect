@@ -47,10 +47,26 @@ We compare MisDetect against the state-of-the-art on the precision, recall and F
 ## Folder Structure
     .
     ├── config.py                 # codes for setting parameters
-    ├── utils.py                  # utility functions
-    ├── main.py                   # evaluation of different methods
-    ├── misdetect                  # codes of different datasets(tabular or image):multi-class mislabel detection.
+    ├── misdetect                 # codes of different datasets(tabular or image):multi-class mislabel detection.
+        ├── image-misdetect          
+            ├── get_data_tabular.py                  # load dataset and inject mislabels
+            ├── utils.py                  # utility functions
+            ├── main.py                   # evaluation of different methods
+            ├── model.py                   # Design the model and set model parameters 
+
+        ├── tabular-misdetect          
+            ├── get_data_image.py                  # load dataset and inject mislabels
+            ├── utils.py                  # utility functions
+            ├── main.py                   # evaluation of different methods
+            ├── model.py                   # eDesign the model and set model parameters
+    ├── dataset          
+            ├── get_data_tabular.py                  # load dataset and inject mislabels
+            ├── utils.py                  # utility functions
+            ├── main.py                   # evaluation of different methods
+            ├── model.py                   # Design the model and set model parameters 
     └── requirements.txt          # requirements to run the codes
+    └── misdetect.pdf          # Our original paper on mislabel detection
+    └── README.md          
 
 
 
