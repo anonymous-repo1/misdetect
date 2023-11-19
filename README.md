@@ -102,3 +102,47 @@ For example, if you want to conduct our misdatect method, you can use `--method 
 |    MisDetect Without Influence and Classification Model (M-W-IM) | It is a variation of our method that only uses early loss to detect mislabels, while disables the influence-based verification and classification model.  |     
 |    MisDetect Without Classification Model(M-W-M)| It is another variation that uses early loss and influence-based verification while disabling the classification model   |    
 |      MisDetect | It is our full-fledged solution     |       
+
+## Cammands
+
+### Image Dataset
+For image dataset, you need to first enter the `/misdetect/image-misdetect` folder:
+```
+cd misdetect/image-misdetect
+```
+The following command will run the baselines **K-Nearest Neighbor(KNN)**, **Ensemble-based method via majority vote(E-MV)**, **Forgetting Events(F-E)**, **Clean Pool**, **MentorNet**, **Co-teaching**, **Cleanlab**, **Non-iter**, **MisDetect Without Influence and Classification Model (M-W-IM)**, **MisDetect Without Classification Model(M-W-M)** and our algorithm **MisDetect** on the dataset `mnist`. 
+```
+python main.py mnist 0.3 random misdetect
+python main.py mnist 0.3 random knn
+python main.py mnist 0.3 random clean_pool
+python main.py mnist 0.3 random cleanlab
+python main.py mnist 0.3 random forget_event
+python main.py mnist 0.3 random ensemble
+python main.py mnist 0.3 random coteaching
+python main.py mnist 0.3 random mentornet
+python main.py mnist 0.3 random non_iter
+python main.py mnist 0.3 random M_W_IM
+python main.py mnist 0.3 random M_W_M
+```
+If you need to run the algorithms on other dataset, simply change the dataset name `mnist` into other names such as `cifar10`, `cifar100`, `kmnist`, `fashion-mnist` and `svhn`.
+
+### Tabular Dataset
+For tabular dataset, you need to first enter the `/misdetect/tabular-misdetect` folder:
+```
+cd misdetect/tabular-misdetect
+```
+The following command will run the baselines **K-Nearest Neighbor(KNN)**, **Ensemble-based method via majority vote(E-MV)**, **Forgetting Events(F-E)**, **Clean Pool**, **MentorNet**, **Co-teaching**, **Cleanlab**, **Non-iter**, **MisDetect Without Influence and Classification Model (M-W-IM)**, **MisDetect Without Classification Model(M-W-M)** and our algorithm **MisDetect** on the dataset `mnist`. 
+```
+python main.py covertype 0.3 random misdetect
+python main.py covertype 0.3 random knn
+python main.py covertype 0.3 random clean_pool
+python main.py covertype 0.3 random cleanlab
+python main.py covertype 0.3 random forget_event
+python main.py covertype 0.3 random ensemble
+python main.py covertype 0.3 random coteaching
+python main.py covertype 0.3 random mentornet
+python main.py covertype 0.3 random non_iter
+python main.py covertype 0.3 random M_W_IM
+python main.py covertype 0.3 random M_W_M
+```
+If you need to run the algorithms on other dataset, simply change the dataset name `covertype` into other names such as `uscensus`, `credit`, `airline`, `mobile`, `heart`, `eeg`, `wine` and `hotel`.
