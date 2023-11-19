@@ -45,8 +45,6 @@ We compare MisDetect against the state-of-the-art on the precision, recall and F
 # Quick Start
 
 ## Folder Structure
-    .
-    ├── config.py                 # codes for setting parameters
     ├── misdetect                 # codes of different datasets(tabular or image):multi-class mislabel detection.
         ├── image-misdetect          
             ├── get_data_tabular.py                  # load dataset and inject mislabels
@@ -127,7 +125,7 @@ For image dataset, you need to first enter the `/misdetect/image-misdetect` fold
 ```
 cd misdetect/image-misdetect
 ```
-The following command will run the baselines **K-Nearest Neighbor(KNN)**, **Ensemble-based method via majority vote(E-MV)**, **Forgetting Events(F-E)**, **Clean Pool**, **MentorNet**, **Co-teaching**, **Cleanlab**, **Non-iter**, **MisDetect Without Influence and Classification Model (M-W-IM)**, **MisDetect Without Classification Model(M-W-M)** and our algorithm **MisDetect** on the dataset `mnist`. 
+The following commands will run the baselines **K-Nearest Neighbor(KNN)**, **Ensemble-based method via majority vote(E-MV)**, **Forgetting Events(F-E)**, **Clean Pool**, **MentorNet**, **Co-teaching**, **Cleanlab**, **Non-iter**, **MisDetect Without Influence and Classification Model (M-W-IM)**, **MisDetect Without Classification Model(M-W-M)** and our algorithm **MisDetect** on the dataset `mnist`. While running these commands, you can also adjust the proportion of mislabel data you want to experiment with (such as from `0.1` to `0.4`), the distribution of mislabel data (i.e. `random` and `equal`).
 ```
 python main.py mnist 0.3 random misdetect
 python main.py mnist 0.3 random knn
@@ -148,7 +146,7 @@ For tabular dataset, you need to first enter the `/misdetect/tabular-misdetect` 
 ```
 cd misdetect/tabular-misdetect
 ```
-The following command will run the baselines **K-Nearest Neighbor(KNN)**, **Ensemble-based method via majority vote(E-MV)**, **Forgetting Events(F-E)**, **Clean Pool**, **MentorNet**, **Co-teaching**, **Cleanlab**, **Non-iter**, **MisDetect Without Influence and Classification Model (M-W-IM)**, **MisDetect Without Classification Model(M-W-M)** and our algorithm **MisDetect** on the dataset `mnist`. 
+The following commands will run the baselines **K-Nearest Neighbor(KNN)**, **Ensemble-based method via majority vote(E-MV)**, **Forgetting Events(F-E)**, **Clean Pool**, **MentorNet**, **Co-teaching**, **Cleanlab**, **Non-iter**, **MisDetect Without Influence and Classification Model (M-W-IM)**, **MisDetect Without Classification Model(M-W-M)** and our algorithm **MisDetect** on the dataset `covertype`. While running these commands, you can also adjust the proportion of mislabel data you want to experiment with (such as from `0.1` to `0.4`), the distribution of mislabel data (i.e. `random` and `equal`),
 ```
 python main.py covertype 0.3 random misdetect
 python main.py covertype 0.3 random knn
