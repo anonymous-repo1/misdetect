@@ -8,7 +8,9 @@ The framework of our algorithm is as follows:
     <img src="framework.png" width="1000"/>
 <p>
 
-We evaluate our approach on 15 real-world image and tabular datasets from diverse domains. Some the datasets are relatively large, please further review through the links provided in the paper. Table below shows the statistics of the datasets.
+We evaluate our approach on 15 real-world image and tabular datasets from diverse domains. Some the datasets are relatively large, please further review through the links provided in the paper. <a href = "#-table_dataset">table</a> below shows the statistics of the datasets.
+
+<div id="-table_dataset"></div> 
 
 |   **Dataset**  | **#-Items** | **#-Attributes** | **#-Classes** | **Mislabel Ratio** |             **Classifacation Task**             |
 |:--------------:|:-----------:|:----------------:|:-------------:|:------------------:|:-----------------------------------------------:|
@@ -42,7 +44,6 @@ We compare MisDetect against the state-of-the-art on the precision, recall and F
 # Quick Start
 
 ## Folder Structure
-
     .
     ├── config.py                 # codes for setting parameters
     ├── utils.py                  # utility functions
@@ -60,23 +61,44 @@ Before running the codes, please make sure the environment is set proporly accor
 
 
 ## Quick Start
-Different experiments can be conducted by passing different parameters to `main.py`.
+Different experiments can be conducted by passing different parameters to `main.py` both for image dataset and tabular dataset.
 We explain some key parameters here.
 
 
-> Mislabel ratio, i.e., the fraction of dataset to be fflipped as mislabeled. Although the mislabel ratio for each dataset is indicated in the table above, we still provide the mislabel ratio parameter, which allows users to fill in any datasets for experimentation.
+> Mislabel ratio, i.e., the fraction of dataset to be flipped as mislabeled. Although the mislabel ratio for each dataset is indicated in the table above, we still provide the mislabel ratio parameter, which allows users to fill in any datasets for experimentation.
 >> --mis_ratio [mislabel_ratio]
 
-For example, if you want to select a dataset with a proportion of 10% mislabels, you can use `--mis_ratio 0.1`.
+For example, if you want to select a dataset with a proportion of 10% mislabels, you can use `--mislabel_ratio 0.1`.
 
 
 > Mislabel distribution, i.e., the mislabel injection methods. We provide two types of mislabel injection method——Random injection and Equal injection.More specifically, given an expected proportion (say 20%) of mislabeled instances, random injection randomly selects 20% instances from the dataset and flips each of them to a random label differ- ent from the ground truth. Equal injection instead flips the same number of instances in each class. 
 >> --mis_distribution [mislabel_distribution]
 
-For example, if you want to select a dataset with Random mislabel injection method, you can use `--mis_distribution random`.
+For example, if you want to select a dataset with Random mislabel injection method, you can use `--mislabel_distribution random`.
 
 
-> Number of neighbors (K) for the classification model.
->> --kNN_k [k]
+> Dataset, i.e., specify the dataset you want to conduct the experiment on. We provide a total of 15 different datasets, as showns in tha <a href = "#-table_dataset">table</a> above, We evaluate our approach on 15 real-world image and tabular datasets from diverse domains. The size of the datasets varies from the magnitude of 102 to 106. The number of classes in each dataset ranges from 2 to 100.
+>> --dataset [dataset]
 
-There are many other parameters and we have provided detailed clarification for them, which can be found in `config.py`.
+For example, if you want to conduct an expriment on MNIST dataset, you can use `--dataset mnist`.
+
+> Method, i.e., specify the method you want to conduct the experiment on. We compare misdetect against 10 different methods, including existing works and the variants of our own approach. Details are shown in <a href = "#-Method">table</a> below.
+>> --dataset [dataset]
+
+For example, if you want to conduct our misdatect method, you can use `--method misdatect`.
+
+<div id="-Method"></div> 
+
+|   **Method**  | **Description** |
+|:--------------:|:-----------:|
+|    K-Nearest Neighbor(KNN)    |    Given an instance, if it has the same label with the majority of its 𝐾 nearest neighbors, it is considered to be clean. Otherwise, it is mislabeled. We vary 𝐾 from 1 to 30 and report the best result.  |  
+|      Ensemble-based method via majority vote(E-MV)      |    It ensembles multiple independent classifiers with majority vote. An instance will be marked as mislabeled if the prediction is different from its label.    |      
+|     Forgetting Events(F-E)     |   It identifies mislabeled instances if their prediction results vary frequently during training.   |      
+|     Clean Pool | It uses P𝑐 to train a classification model and then predicts each instance in 𝐷. An instance will be considered as mislabeled if the prediction is inconsistent with its label.      |      
+|     MentorNet | It is a reweighting-based robust learning method. The key idea is to use MentorNet to produce a smaller weight for potentially mislabeled instances and a higher weight for the clean. We train the robust model over 𝐷 and then mark the mis-classified training instances as mislabeled.    |    
+|      Co-teaching  | As discussed in the related work section, Co-teaching is a classical robust learning method. Similar to MentorNet, we use the robust model trained by Co-teaching to detect mislabels as the training instances misclassified by the model.      |  
+|     Cleanlab | It uses confident learning to distinguish mislabeled instances and clean ones, which implements a Python library to detect mislabels. It takes as input 𝐷 as well as an ML model. For the model, we use the same type as ours for a fair comparison.  |     
+|       Non-iter |  It is a baseline that trains only one iteration and then uses early loss to detect mislabels.   |    
+|    MisDetect Without Influence and Classification Model (M-W-IM) | It is a variation of our method that only uses early loss to detect mislabels, while disables the influence-based verification and classification model.  |     
+|    MisDetect Without Classification Model(M-W-M)| It is another variation that uses early loss and influence-based verification while disabling the classification model   |    
+|      MisDetect | It is our full-fledged solution     |       
