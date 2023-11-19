@@ -64,7 +64,7 @@ def mis_injection(dataset, mis_rate, mis_distribution):
 
     # clean数据占比
     good_sample_ratio = 1 - float(mis_rate)
-    train_set_before = pd.read_csv("/Users/dengyuhao/Desktop/misdetect/dataset/" + dataset + "/" + dataset + "_normalize.csv")
+    train_set_before = pd.read_csv("../../dataset/" + dataset + "/" + dataset + "_normalize.csv")
     if dataset in ["credit", "airline"]:
         train_set_before = train_set_before.fillna(axis=1, method='ffill')
         train_set_before = train_set_before.dropna()
