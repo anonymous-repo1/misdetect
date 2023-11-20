@@ -57,11 +57,28 @@ We compare MisDetect against the state-of-the-art on the precision, recall and F
             ├── utils.py                  # utility functions
             ├── main.py                   # evaluation of different methods
             ├── model.py                   # eDesign the model and set model parameters
-    ├── dataset          
-            ├── get_data_tabular.py                  # load dataset and inject mislabels
-            ├── utils.py                  # utility functions
-            ├── main.py                   # evaluation of different methods
-            ├── model.py                   # Design the model and set model parameters 
+    ├── dataset
+        ├── EEG          
+            ├── eeg.csv                  # Original EEG CSV dataset
+            ├── eeg_normalize.csv                  # Preprocessed EEG CSV dataset
+        ├── EEG          
+            ├── eeg.csv                  # Original EEG CSV dataset
+            ├── eeg_normalize.csv                  # Preprocessed EEG CSV dataset
+        ├── EEG          
+            ├── eeg.csv                  # Original EEG CSV dataset
+            ├── eeg_normalize.csv                  # Preprocessed EEG CSV dataset
+        ├── EEG          
+            ├── eeg.csv                  # Original EEG CSV dataset
+            ├── eeg_normalize.csv                  # Preprocessed EEG CSV dataset
+        ├── EEG          
+            ├── eeg.csv                  # Original EEG CSV dataset
+            ├── eeg_normalize.csv                  # Preprocessed EEG CSV dataset
+        ├── EEG          
+            ├── eeg.csv                  # Original EEG CSV dataset
+            ├── eeg_normalize.csv                  # Preprocessed EEG CSV dataset
+        ├── EEG          
+            ├── eeg.csv                  # Original EEG CSV dataset
+            ├── eeg_normalize.csv                  # Preprocessed EEG CSV dataset
     └── requirements.txt          # requirements to run the codes
     └── misdetect.pdf          # Our original paper on mislabel detection
     └── README.md          
