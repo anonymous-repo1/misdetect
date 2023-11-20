@@ -104,7 +104,7 @@ Before running the codes, please make sure the environment is set proporly accor
 - `Cuda 10.1`
 
 
-## Quick Start
+## Cammands
 Different experiments can be conducted by passing different parameters to `main.py` both for image dataset and tabular dataset.
 We explain some key parameters here.
 
@@ -147,7 +147,7 @@ For example, if you want to conduct our misdatect method, you can use `--method 
 |    MisDetect Without Classification Model(M-W-M)| It is another variation that uses early loss and influence-based verification while disabling the classification model   |    
 |      MisDetect | It is our full-fledged solution     |       
 
-## Cammands
+## Quick Start
 
 ### Image Dataset
 For image dataset, you need to first enter the `/misdetect/image-misdetect` folder:
