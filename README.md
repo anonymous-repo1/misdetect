@@ -85,8 +85,8 @@ We compare MisDetect against the state-of-the-art on the precision, recall and F
         ├── credit          
             ├── credit.csv                  # Original credit CSV dataset
             ├── credit_normalize.csv                  # Preprocessed credit CSV dataset
-        ├── cifar10          # CIFAR10 dataset
-        ├── cifar100          # CIFAR100 dataset
+        ├── cifar-10-batches-py          # CIFAR10 dataset
+        ├── cifar-100-python          # CIFAR100 dataset
         ├── MNIST          # MNIST dataset
         ├── KMNIST          # KMNIST dataset
         ├── FashionMNIST          # Fashion-MNIST dataset
