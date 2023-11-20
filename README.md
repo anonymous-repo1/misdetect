@@ -127,7 +127,7 @@ For example, if you want to select a dataset with Random mislabel injection meth
 For example, if you want to conduct an expriment on MNIST dataset, you can use `--dataset mnist`.
 
 > Method, i.e., specify the method you want to conduct the experiment on. We compare misdetect against 10 different methods, including existing works and the variants of our own approach. Details are shown in <a href = "#-Method">table_methods</a> below.
->> --dataset [dataset]
+>> --method [method]
 
 For example, if you want to conduct our misdatect method, you can use `--method misdatect`.
 
