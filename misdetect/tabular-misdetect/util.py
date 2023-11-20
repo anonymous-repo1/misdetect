@@ -495,8 +495,6 @@ def knn(train_clean_bad_set, train_clean_dataset, train_bad_dataset):
     detect_num = 0
     correct_num = 0
     for i in range(len(train_clean_bad_set)):
-        if i % 100 == 0:
-            print(i)
         distance, index = nbrs.kneighbors(train_clean_bad_set[i][0].reshape(1, -1), 3)
         neighbors = []
         for x in np.array(index.tolist()[0]):
@@ -661,9 +659,6 @@ def cleanlab(train_clean_bad_set, train_clean_dataset, train_bad_dataset):
         return_indices_ranked_by="self_confidence",
     )
 
-    print(f"Cleanlab found {len(ranked_label_issues)} label issues.")
-    print(ranked_label_issues)
-
     detect_num = len(ranked_label_issues)
     correct_num = 0
     for i in ranked_label_issues:
@@ -716,7 +711,6 @@ def forget_event(train_clean_bad_set, train_clean_dataset, train_bad_dataset):
     total_detect_num = 0
     times = 0
     while((predict_vali == labels_vali).sum() != 3):
-        print(total_len, clean_len, bad_len, (predict_vali == labels_vali).sum())
         predict_logistic = NCN.predict(features)
         detect_idx_50 = []
         correct_num = 0
@@ -727,7 +721,6 @@ def forget_event(train_clean_bad_set, train_clean_dataset, train_bad_dataset):
                 if (total_len - 1) >= i >= clean_len:
                     correct_num += 1
 
-        print(detect_idx_50)
         new_train_clean_bad_set = []
         for i in range(len(predict_logistic)):
             if i not in detect_idx_50:
@@ -848,12 +841,10 @@ def ensemble(train_clean_bad_set, train_clean_dataset, train_bad_dataset):
         # predict_final[i][predict_naive_bayes[i]] += 1
         # predict_final[i][predict_decision[i]] += 1
 
-    print(predict_final)
 
     detect_num_consensus_filters = 0
     correct_num_consensus_filters = 0
     for i in range(len(train_clean_bad_set)):
-        print(labels[i], predict_final[i][labels[i]])
         if predict_final[i][labels[i]] == 0:
             detect_num_consensus_filters += 1
             if (len(train_clean_bad_set) - 1) >= i >= len(train_clean_dataset):
@@ -1130,7 +1121,7 @@ def mentornet(dataset, train_clean_bad_set, train_clean_dataset, train_bad_datas
                 precision = correct_num / detect_num
                 recall = correct_num / len(train_bad_dataset)
                 f1 = 2 * (precision * recall) / (precision + recall)
-                print("第{}轮: precision:{},recall:{},f1:{}".format(epo + 1, precision, recall, f1))
+                print("{}: precision:{},recall:{},f1:{}".format(epo + 1, precision, recall, f1))
 
 
 def non_iter(dataset, train_clean_bad_set, train_clean_dataset, train_bad_dataset):
@@ -1192,14 +1183,13 @@ def non_iter(dataset, train_clean_bad_set, train_clean_dataset, train_bad_datase
         if (len(train_clean_bad_set) - 1) >= c[i] >= (len(train_clean_dataset) - 1):
             correct_num += 1
             bad_detected_idx.append(c[i])
-    print("loss最高的脏数据占比为:{}".format(correct_num / len(train_bad_dataset)))
 
         # 计算总的精度
     acc = accuracy_score(early_loss_actual, early_loss_predicted)
     precision = precision_score(early_loss_actual, early_loss_predicted)
     recall = recall_score(early_loss_actual, early_loss_predicted)
     f1 = 2 * (precision * recall) / (precision + recall)
-    print("early loss detection: acc:{},precision:{},recall:{},f1:{}".format(acc, precision, recall, f1))
+    print("acc:{},precision:{},recall:{},f1:{}".format(acc, precision, recall, f1))
 
 def M_W_IM(dataset, train_clean_bad_set, train_clean_dataset, train_bad_dataset):
     total_len = len(train_clean_bad_set)
@@ -1320,7 +1310,6 @@ def M_W_IM(dataset, train_clean_bad_set, train_clean_dataset, train_bad_dataset)
     influence_bad_sorted = sorted(influence_bad, key=lambda x: -x[1])
     influence_bad_idx = [x[0] for x in influence_bad_sorted]  # 获取排序好后b坐标,下标在第0位
 
-    print(len(influence_bad_idx))
 
     correct_num = 0
     true_bad_detected_idx = []
@@ -1339,7 +1328,6 @@ def M_W_IM(dataset, train_clean_bad_set, train_clean_dataset, train_bad_dataset)
             correct_num += 1
             true_bad_detected_idx.append(influence_bad_idx[i])
 
-    print("loss最高的脏数据占比为:{}".format(correct_num / len(train_bad_dataset)))
     total_correct_num += correct_num
 
     # 计算总的精度
@@ -1347,7 +1335,7 @@ def M_W_IM(dataset, train_clean_bad_set, train_clean_dataset, train_bad_dataset)
     precision = precision_score(early_loss_actual, early_loss_predicted)
     recall = recall_score(early_loss_actual, early_loss_predicted)
     f1 = 2 * (precision * recall) / (precision + recall)
-    print("early loss detection: acc:{},precision:{},recall:{},f1:{}".format(acc, precision, recall, f1))
+    print("precision:{},recall:{},f1:{}".format(acc, precision, recall, f1))
 
 def M_W_M(dataset, train_clean_bad_set, train_clean_dataset, train_bad_dataset):
     total_len = len(train_clean_bad_set)
@@ -1470,8 +1458,6 @@ def M_W_M(dataset, train_clean_bad_set, train_clean_dataset, train_bad_dataset):
     influence_bad_sorted = sorted(influence_bad, key=lambda x: -x[1])
     influence_bad_idx = [x[0] for x in influence_bad_sorted]  # 获取排序好后b坐标,下标在第0位
 
-    print(len(influence_bad_idx))
-
     correct_num = 0
     true_bad_detected_idx = []
     detect_idx_50 = []
@@ -1489,14 +1475,12 @@ def M_W_M(dataset, train_clean_bad_set, train_clean_dataset, train_bad_dataset):
             correct_num += 1
             true_bad_detected_idx.append(influence_bad_idx[i])
 
-    print("loss最高的脏数据占比为:{}".format(correct_num / int(len(train_bad_dataset) / 4)))
     total_correct_num += correct_num
 
     # 计算总的精度
     acc = accuracy_score(early_loss_actual, early_loss_predicted)
     precision = precision_score(early_loss_actual, early_loss_predicted)
     recall = recall_score(early_loss_actual, early_loss_predicted)
-    print("early loss detection: acc:{},precision:{},recall:{}".format(acc, precision, recall))
 
     ground_truth_tmp = []
     new_train_clean_bad_set = []
@@ -1515,7 +1499,6 @@ def M_W_M(dataset, train_clean_bad_set, train_clean_dataset, train_bad_dataset):
     total_len = len(new_train_clean_bad_set)
     bad_len = bad_len - correct_num
     clean_len = total_len - bad_len
-    print(clean_len, bad_len, total_len)
 
     train_loader = DataLoader(dataset=MyDataSet(new_train_clean_bad_set), batch_size=128, shuffle=True, drop_last=True)
     test_loader = DataLoader(dataset=MyDataSet(new_train_clean_bad_set), batch_size=1, shuffle=False)
@@ -1533,7 +1516,6 @@ def M_W_M(dataset, train_clean_bad_set, train_clean_dataset, train_bad_dataset):
         early_loss = np.zeros(total_len, dtype=np.float64)
 
         if (times * int(len(train_bad_dataset) / 4)) >= 0.2 * len(train_bad_dataset):
-            print("------------------------------------kaishi----------------------------------------")
             epoch = 8
 
         for i in range(epoch):
@@ -1599,7 +1581,6 @@ def M_W_M(dataset, train_clean_bad_set, train_clean_dataset, train_bad_dataset):
         influence_bad_sorted = sorted(influence_bad, key=lambda x: -x[1])
         influence_bad_idx = [x[0] for x in influence_bad_sorted]  # 获取排序好后b坐标,下标在第0位
 
-        print(len(influence_bad_idx))
 
         correct_num = 0
         true_bad_detected_idx = []
@@ -1618,14 +1599,12 @@ def M_W_M(dataset, train_clean_bad_set, train_clean_dataset, train_bad_dataset):
                 correct_num += 1
                 true_bad_detected_idx.append(influence_bad_idx[i])
 
-        print("loss最高的脏数据占比为:{}".format(correct_num / int(len(train_bad_dataset) / 4)))
         total_correct_num += correct_num
 
         # 计算总的精度
         acc = accuracy_score(early_loss_actual, early_loss_predicted)
         precision = precision_score(early_loss_actual, early_loss_predicted)
         recall = recall_score(early_loss_actual, early_loss_predicted)
-        print("early loss detection: acc:{},precision:{},recall:{}".format(acc, precision, recall))
 
         ground_truth_tmp = []
         new_train_clean_bad_set = []
@@ -1644,7 +1623,6 @@ def M_W_M(dataset, train_clean_bad_set, train_clean_dataset, train_bad_dataset):
         total_len = len(new_train_clean_bad_set)
         bad_len = bad_len - correct_num
         clean_len = total_len - bad_len
-        print(clean_len, bad_len, total_len)
 
         train_loader = DataLoader(dataset=MyDataSet(new_train_clean_bad_set), batch_size=128, shuffle=True, drop_last=True)
         test_loader = DataLoader(dataset=MyDataSet(new_train_clean_bad_set), batch_size=1, shuffle=False)
