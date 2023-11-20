@@ -118,7 +118,7 @@ For example, if you want to select a dataset with a proportion of 10% mislabels,
 > Mislabel distribution, i.e., the mislabel injection methods. We provide two types of mislabel injection method——Random injection and Equal injection.More specifically, given an expected proportion (say 20%) of mislabeled instances, random injection randomly selects 20% instances from the dataset and flips each of them to a random label differ- ent from the ground truth. Equal injection instead flips the same number of instances in each class. 
 >> --mis_distribution [mislabel_distribution]
 
-For example, if you want to select a dataset with Random mislabel injection method, you can use `--mislabel_distribution random`.
+For example, if you want to select a dataset with Random mislabel injection method, you can use `--mislabel_distribution equal`.
 
 
 > Dataset, i.e., specify the dataset you want to conduct the experiment on. We provide a total of 15 different datasets, as showns in tha <a href = "#-table_dataset">table_datasets</a> above, We evaluate our approach on 15 real-world image and tabular datasets from diverse domains. The size of the datasets varies from the magnitude of 102 to 106. The number of classes in each dataset ranges from 2 to 100.
@@ -156,17 +156,17 @@ cd misdetect/image-misdetect
 ```
 The following commands will run the baselines **K-Nearest Neighbor(KNN)**, **Ensemble-based method via majority vote(E-MV)**, **Forgetting Events(F-E)**, **Clean Pool**, **MentorNet**, **Co-teaching**, **Cleanlab**, **Non-iter**, **MisDetect Without Influence and Classification Model (M-W-IM)**, **MisDetect Without Classification Model(M-W-M)** and our algorithm **MisDetect** on the dataset `mnist`. While running these commands, you can also adjust the proportion of mislabel data you want to experiment with (such as from `0.1` to `0.4`), the distribution of mislabel data (i.e. `random` and `equal`).
 ```
-python main.py mnist 0.3 random misdetect
-python main.py mnist 0.3 random knn
-python main.py mnist 0.3 random clean_pool
-python main.py mnist 0.3 random cleanlab
-python main.py mnist 0.3 random forget_event
-python main.py mnist 0.3 random ensemble
-python main.py mnist 0.3 random coteaching
-python main.py mnist 0.3 random mentornet
-python main.py mnist 0.3 random non_iter
-python main.py mnist 0.3 random M_W_IM
-python main.py mnist 0.3 random M_W_M
+python main.py mnist 0.3 equal misdetect
+python main.py mnist 0.3 equal knn
+python main.py mnist 0.3 equal clean_pool
+python main.py mnist 0.3 equal cleanlab
+python main.py mnist 0.3 equal forget_event
+python main.py mnist 0.3 equal ensemble
+python main.py mnist 0.3 equal coteaching
+python main.py mnist 0.3 equal mentornet
+python main.py mnist 0.3 equal non_iter
+python main.py mnist 0.3 equal M_W_IM
+python main.py mnist 0.3 equal M_W_M
 ```
 If you need to run the algorithms on other dataset, simply change the dataset name `mnist` into other names such as `cifar10`, `cifar100`, `kmnist`, `fashion-mnist` and `svhn`.
 
@@ -177,17 +177,17 @@ cd misdetect/tabular-misdetect
 ```
 The following commands will run the baselines **K-Nearest Neighbor(KNN)**, **Ensemble-based method via majority vote(E-MV)**, **Forgetting Events(F-E)**, **Clean Pool**, **MentorNet**, **Co-teaching**, **Cleanlab**, **Non-iter**, **MisDetect Without Influence and Classification Model (M-W-IM)**, **MisDetect Without Classification Model(M-W-M)** and our algorithm **MisDetect** on the dataset `covertype`. While running these commands, you can also adjust the proportion of mislabel data you want to experiment with (such as from `0.1` to `0.4`), the distribution of mislabel data (i.e. `random` and `equal`),
 ```
-python main.py covertype 0.3 random misdetect
-python main.py covertype 0.3 random knn
-python main.py covertype 0.3 random clean_pool
-python main.py covertype 0.3 random cleanlab
-python main.py covertype 0.3 random forget_event
-python main.py covertype 0.3 random ensemble
-python main.py covertype 0.3 random coteaching
-python main.py covertype 0.3 random mentornet
-python main.py covertype 0.3 random non_iter
-python main.py covertype 0.3 random M_W_IM
-python main.py covertype 0.3 random M_W_M
+python main.py covertype 0.3 equal misdetect
+python main.py covertype 0.3 equal knn
+python main.py covertype 0.3 equal clean_pool
+python main.py covertype 0.3 equal cleanlab
+python main.py covertype 0.3 equal forget_event
+python main.py covertype 0.3 equal ensemble
+python main.py covertype 0.3 equal coteaching
+python main.py covertype 0.3 equal mentornet
+python main.py covertype 0.3 equal non_iter
+python main.py covertype 0.3 equal M_W_IM
+python main.py covertype 0.3 equal M_W_M
 ```
 If you need to run the algorithms on other dataset, simply change the dataset name `covertype` into other names such as `uscensus`, `credit`, `airline`, `mobile`, `heart`, `eeg`, `wine` and `hotel`.
 
@@ -195,12 +195,12 @@ To simplify the above process, we have designed a command that can run all the a
 #### Image Dataset
 ```
 cd misdetect/image-misdetect
-python main.py mnist 0.3 random all_methods
+python main.py mnist 0.3 equal all_methods
 ```
 
 #### Tabular Dataset
 ```
 cd misdetect/tabular-misdetect
-python main.py covertype 0.3 random all_methods
+python main.py covertype 0.3 equal all_methods
 ```
 As shown in <a href = "#-result1">result1</a> and <a href = "#-result2">result2</a>. For each algorithm, we repeat the experiment 10 times and use the average of the 10 different experimental results as the final output result. 
