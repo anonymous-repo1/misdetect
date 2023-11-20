@@ -515,7 +515,7 @@ def knn(train_clean_bad_set, train_clean_dataset, train_bad_dataset):
     print("detect recall：{}".format(recall))
     print("detect f1 score：{}".format(f1))
 
-def clean_pool(dataset, clean_pool_len, train_clean_bad_set, train_clean_dataset, train_bad_dataset):
+def clean_pool(dataset, train_clean_bad_set, train_clean_dataset, train_bad_dataset):
     total_len = len(train_clean_bad_set)
     clean_len = len(train_clean_dataset)
     bad_len = len(train_bad_dataset)
@@ -580,7 +580,7 @@ def clean_pool(dataset, clean_pool_len, train_clean_bad_set, train_clean_dataset
 
         model_clean.train()
         clean_pool = []
-        for indeX in range(clean_pool_len):
+        for indeX in range(int(len(train_clean_dataset) / 2)):
             clean_pool.append(train_clean_bad_set[clean_pool_idx[indeX]])
         train_loader_clean = DataLoader(dataset=MyDataSet(clean_pool), batch_size=128, shuffle=True)
 
@@ -609,7 +609,7 @@ def clean_pool(dataset, clean_pool_len, train_clean_bad_set, train_clean_dataset
                     test_label_predict_total = model(test_feature_total)
                     test_accuracy_num_total = (test_label_predict_total.argmax(1) == test_label_total).sum()
                     test_accuracy_total += test_accuracy_num_total
-                if (test_accuracy_total / clean_pool_len) >= 0.9:
+                if (test_accuracy_total / (int(len(train_clean_dataset) / 2))) >= 0.9:
                     break
 
         num = 0
@@ -1657,4 +1657,36 @@ def M_W_M(dataset, train_clean_bad_set, train_clean_dataset, train_bad_dataset):
     print("detect recall：{}".format(recall))
     print("detect f1 score：{}".format(f1))
 
+def evaluate_all_methods(dataset, train_clean_bad_set, train_clean_dataset, train_bad_dataset, train_clean_bad_set_ground_truth):
+    print("=======================misdetect=========================")
+    misdetect(dataset, train_clean_bad_set, train_clean_dataset, train_bad_dataset, train_clean_bad_set_ground_truth)
 
+    print("=======================knn=========================")
+    knn(train_clean_bad_set, train_clean_dataset, train_bad_dataset)
+
+    print("=======================clean_pool=========================")
+    clean_pool(dataset, train_clean_bad_set, train_clean_dataset, train_bad_dataset)
+
+    print("=======================cleanlab=========================")
+    cleanlab(train_clean_bad_set, train_clean_dataset, train_bad_dataset)
+
+    print("=======================forget_event=========================")
+    forget_event(train_clean_bad_set, train_clean_dataset, train_bad_dataset)
+
+    print("=======================ensemble=========================")
+    ensemble(train_clean_bad_set, train_clean_dataset, train_bad_dataset)
+
+    print("=======================coteaching=========================")
+    coteaching(dataset, train_clean_bad_set, train_clean_dataset, train_bad_dataset)
+
+    print("=======================mentornet=========================")
+    mentornet(dataset, train_clean_bad_set, train_clean_dataset, train_bad_dataset)
+
+    print("=======================non_iter=========================")
+    non_iter(dataset, train_clean_bad_set, train_clean_dataset, train_bad_dataset)
+
+    print("=======================M_W_IM=========================")
+    M_W_IM(dataset, train_clean_bad_set, train_clean_dataset, train_bad_dataset)
+
+    print("=======================M_W_M=========================")
+    M_W_M(dataset, train_clean_bad_set, train_clean_dataset, train_bad_dataset)

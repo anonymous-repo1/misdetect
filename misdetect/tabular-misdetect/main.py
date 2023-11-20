@@ -32,10 +32,12 @@ if __name__ == '__main__':
 
     if args.method == "misdetect":
         misdetect(args.dataset, train_clean_bad_set, train_clean_dataset, train_bad_dataset, train_clean_bad_set_ground_truth)
+    elif args.method == "all_methods":
+        evaluate_all_methods(args.dataset, train_clean_bad_set, train_clean_dataset, train_bad_dataset, train_clean_bad_set_ground_truth)
     elif args.method == "knn":
         knn(train_clean_bad_set, train_clean_dataset, train_bad_dataset)
     elif args.method == "clean_pool":
-        clean_pool(args.dataset, int(len(train_clean_dataset) / 2), train_clean_bad_set, train_clean_dataset, train_bad_dataset)
+        clean_pool(args.dataset, train_clean_bad_set, train_clean_dataset, train_bad_dataset)
     elif args.method == "cleanlab":
         cleanlab(train_clean_bad_set, train_clean_dataset, train_bad_dataset)
     elif args.method == "forget_event":

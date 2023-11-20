@@ -69,8 +69,8 @@ def mis_injection(dataset, mis_rate, mis_distribution):
         train_set_before = train_set_before.fillna(axis=1, method='ffill')
         train_set_before = train_set_before.dropna()
         # 首先将pandas读取的数据转化为array
-        train_set_before = np.array(train_set_before)
-        train_set_before = np.delete(train_set_before, 0, axis=1)     
+        # train_set_before = np.array(train_set_before)
+        # train_set_before = np.delete(train_set_before, 0, axis=1)
 
     train_set_before = np.array(train_set_before)
     label = np.array(train_set_before).T[label_index]
