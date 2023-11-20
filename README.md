@@ -8,7 +8,7 @@ The framework of our algorithm is as follows:
     <img src="framework.png" width="1000"/>
 <p>
 
-We evaluate our approach on 15 real-world image and tabular datasets from diverse domains. Some the datasets are relatively large, please further review through the links provided in the paper. <a href = "#-table_dataset">table</a> below shows the statistics of the datasets.
+We evaluate our approach on 15 real-world image and tabular datasets from diverse domains. Some the datasets(i.e., `covertype` and `svhn`) are relatively large, please further review through the [svhn](https://drive.google.com/drive/folders/1aQ7Koyj1YOQXeKRc4nX536ZdRmowvrWF?usp=drive_link) and [covertype](https://drive.google.com/drive/folders/1oI8qWQqiReJNeyvyR8b9iGsGB_kyt0WM?usp=drive_link). If you want to conduct relevant experiments on these two datasets, please click on the corresponding link and download it to the `/dataset/` folder. <a href = "#-table_dataset">table</a> below shows the statistics of the datasets.
 
 <div id="-table_dataset"></div> 
 
@@ -61,24 +61,36 @@ We compare MisDetect against the state-of-the-art on the precision, recall and F
         ├── EEG          
             ├── eeg.csv                  # Original EEG CSV dataset
             ├── eeg_normalize.csv                  # Preprocessed EEG CSV dataset
-        ├── EEG          
-            ├── eeg.csv                  # Original EEG CSV dataset
-            ├── eeg_normalize.csv                  # Preprocessed EEG CSV dataset
-        ├── EEG          
-            ├── eeg.csv                  # Original EEG CSV dataset
-            ├── eeg_normalize.csv                  # Preprocessed EEG CSV dataset
-        ├── EEG          
-            ├── eeg.csv                  # Original EEG CSV dataset
-            ├── eeg_normalize.csv                  # Preprocessed EEG CSV dataset
-        ├── EEG          
-            ├── eeg.csv                  # Original EEG CSV dataset
-            ├── eeg_normalize.csv                  # Preprocessed EEG CSV dataset
-        ├── EEG          
-            ├── eeg.csv                  # Original EEG CSV dataset
-            ├── eeg_normalize.csv                  # Preprocessed EEG CSV dataset
-        ├── EEG          
-            ├── eeg.csv                  # Original EEG CSV dataset
-            ├── eeg_normalize.csv                  # Preprocessed EEG CSV dataset
+        ├── mobile          
+            ├── mobile.csv                  # Original mobile_price CSV dataset
+            ├── mobile_normalize.csv                  # Preprocessed mobile_price CSV dataset
+        ├── wine          
+            ├── wine.csv                  # Original wine quality CSV dataset
+            ├── wine_normalize.csv                  # Preprocessed wine quality CSV dataset
+        ├── hotel          
+            ├── hotel.csv                  # Original hotel reservation CSV dataset
+            ├── hotel_normalize.csv                  # Preprocessed hotel reservation CSV dataset
+        ├── heart          
+            ├── heart.csv                  # Original heart CSV dataset
+            ├── heart_normalize.csv                  # Preprocessed heart CSV dataset
+        ├── uscensus          
+            ├── uscensus.csv                  # Original uscensus CSV dataset
+            ├── uscensus_normalize.csv                  # Preprocessed uscensus CSV dataset
+        ├── airline          
+            ├── airline.csv                  # Original airline CSV dataset
+            ├── airline_normalize.csv                  # Preprocessed airline CSV dataset
+        ├── covertype          
+            ├── covertype.csv                  # Original covertype CSV dataset
+            ├── covertype_normalize.csv                  # Preprocessed covertype CSV dataset
+        ├── credit          
+            ├── credit.csv                  # Original credit CSV dataset
+            ├── credit_normalize.csv                  # Preprocessed credit CSV dataset
+        ├── cifar10          # CIFAR10 dataset
+        ├── cifar100          # CIFAR100 dataset
+        ├── MNIST          # MNIST dataset
+        ├── KMNIST          # KMNIST dataset
+        ├── FashionMNIST          # Fashion-MNIST dataset
+        ├── svhn          # svhn dataset
     └── requirements.txt          # requirements to run the codes
     └── misdetect.pdf          # Our original paper on mislabel detection
     └── README.md          
@@ -179,4 +191,8 @@ python main.py covertype 0.3 random M_W_M
 ```
 If you need to run the algorithms on other dataset, simply change the dataset name `covertype` into other names such as `uscensus`, `credit`, `airline`, `mobile`, `heart`, `eeg`, `wine` and `hotel`.
 
-After running the above command, we can obtain the final results corresponding to different algorithms. As shown in <a href = "#-result1">figure1</a> and <a href = "#-result2">figure2</a>. For each algorithm, we repeat the experiment 10 times and use the average of the 10 different experimental results as the final output result. 
+To simplify the above process, we have designed a command that can run all the algorithms at once and obtain corresponding results. 
+```
+python main.py covertype 0.3 random all_methods
+```
+As shown in <a href = "#-result1">figure1</a> and <a href = "#-result2">figure2</a>. For each algorithm, we repeat the experiment 10 times and use the average of the 10 different experimental results as the final output result. 
