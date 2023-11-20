@@ -192,7 +192,15 @@ python main.py covertype 0.3 random M_W_M
 If you need to run the algorithms on other dataset, simply change the dataset name `covertype` into other names such as `uscensus`, `credit`, `airline`, `mobile`, `heart`, `eeg`, `wine` and `hotel`.
 
 To simplify the above process, we have designed a command that can run all the algorithms at once and obtain corresponding results. 
+#### Image Dataset
 ```
+cd misdetect/image-misdetect
+python main.py mnist 0.3 random all_methods
+```
+
+#### Tabular Dataset
+```
+cd misdetect/tabular-misdetect
 python main.py covertype 0.3 random all_methods
 ```
 As shown in <a href = "#-result1">result1</a> and <a href = "#-result2">result2</a>. For each algorithm, we repeat the experiment 10 times and use the average of the 10 different experimental results as the final output result. 
