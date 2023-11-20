@@ -8,7 +8,7 @@ The framework of our algorithm is as follows:
     <img src="framework.png" width="1000"/>
 <p>
 
-We evaluate our approach on 15 real-world image and tabular datasets from diverse domains. Some the datasets(i.e., `covertype` and `svhn`) are relatively large, please further review through the [svhn](https://drive.google.com/drive/folders/1aQ7Koyj1YOQXeKRc4nX536ZdRmowvrWF?usp=drive_link) and [covertype](https://drive.google.com/drive/folders/1oI8qWQqiReJNeyvyR8b9iGsGB_kyt0WM?usp=drive_link). If you want to conduct relevant experiments on these two datasets, please click on the corresponding link and download it to the `/dataset/` folder. <a href = "#-table_dataset">table</a> below shows the statistics of the datasets.
+We evaluate our approach on 15 real-world image and tabular datasets from diverse domains. Some the datasets(i.e., `covertype` and `svhn`) are relatively large, please further review through the [svhn](https://drive.google.com/drive/folders/1aQ7Koyj1YOQXeKRc4nX536ZdRmowvrWF?usp=drive_link) and [covertype](https://drive.google.com/drive/folders/1oI8qWQqiReJNeyvyR8b9iGsGB_kyt0WM?usp=drive_link). If you want to conduct relevant experiments on these two datasets, please click on the corresponding link and download it to the `/dataset/` folder. <a href = "#-table_dataset">table_datasets</a> below shows the statistics of the datasets.
 
 <div id="-table_dataset"></div> 
 
@@ -47,13 +47,13 @@ We compare MisDetect against the state-of-the-art on the precision, recall and F
 ## Folder Structure
     ├── misdetect                 # codes of different datasets(tabular or image):multi-class mislabel detection.
         ├── image-misdetect          
-            ├── get_data_tabular.py                  # load dataset and inject mislabels
+            ├── get_data_image.py                  # load dataset and inject mislabels
             ├── utils.py                  # utility functions
             ├── main.py                   # evaluation of different methods
             ├── model.py                   # Design the model and set model parameters 
 
         ├── tabular-misdetect          
-            ├── get_data_image.py                  # load dataset and inject mislabels
+            ├── get_data_tabular.py                  # load dataset and inject mislabels
             ├── utils.py                  # utility functions
             ├── main.py                   # evaluation of different methods
             ├── model.py                   # eDesign the model and set model parameters
@@ -121,12 +121,12 @@ For example, if you want to select a dataset with a proportion of 10% mislabels,
 For example, if you want to select a dataset with Random mislabel injection method, you can use `--mislabel_distribution random`.
 
 
-> Dataset, i.e., specify the dataset you want to conduct the experiment on. We provide a total of 15 different datasets, as showns in tha <a href = "#-table_dataset">table</a> above, We evaluate our approach on 15 real-world image and tabular datasets from diverse domains. The size of the datasets varies from the magnitude of 102 to 106. The number of classes in each dataset ranges from 2 to 100.
+> Dataset, i.e., specify the dataset you want to conduct the experiment on. We provide a total of 15 different datasets, as showns in tha <a href = "#-table_dataset">table_datasets</a> above, We evaluate our approach on 15 real-world image and tabular datasets from diverse domains. The size of the datasets varies from the magnitude of 102 to 106. The number of classes in each dataset ranges from 2 to 100.
 >> --dataset [dataset]
 
 For example, if you want to conduct an expriment on MNIST dataset, you can use `--dataset mnist`.
 
-> Method, i.e., specify the method you want to conduct the experiment on. We compare misdetect against 10 different methods, including existing works and the variants of our own approach. Details are shown in <a href = "#-Method">table</a> below.
+> Method, i.e., specify the method you want to conduct the experiment on. We compare misdetect against 10 different methods, including existing works and the variants of our own approach. Details are shown in <a href = "#-Method">table_methods</a> below.
 >> --dataset [dataset]
 
 For example, if you want to conduct our misdatect method, you can use `--method misdatect`.
@@ -195,4 +195,4 @@ To simplify the above process, we have designed a command that can run all the a
 ```
 python main.py covertype 0.3 random all_methods
 ```
-As shown in <a href = "#-result1">figure1</a> and <a href = "#-result2">figure2</a>. For each algorithm, we repeat the experiment 10 times and use the average of the 10 different experimental results as the final output result. 
+As shown in <a href = "#-result1">result1</a> and <a href = "#-result2">result2</a>. For each algorithm, we repeat the experiment 10 times and use the average of the 10 different experimental results as the final output result. 
