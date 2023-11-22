@@ -42,7 +42,7 @@ We compare MisDetect against the state-of-the-art on the precision, recall and F
     <img src="result2.png" width="1000"/>
 <p>
 
-# Quick Start
+# Instruction
 
 ## Folder Structure
     ├── misdetect                 # codes of different datasets(tabular or image):multi-class mislabel detection.
